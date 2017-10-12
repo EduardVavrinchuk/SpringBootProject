@@ -1,4 +1,4 @@
-package DaoServices;
+package com.SpringBootProject.DaoServices;
 
 import java.util.List;
 
@@ -21,21 +21,21 @@ public interface ClientsDaoInterface {
 	/**
 	 * This method create a new client in db
 	 * @param client
-	 * @return boolean
+	 * @return Integer
 	 */
-	boolean CreateClient(Clients clients);
+	Integer CreateClient(Clients clients);
 	
 	/**
 	 * This method update information about client
 	 * @param client 
-	 * @return boolean
+	 * @return Integer
 	 */
-	boolean UbdateClient(Clients clients);
+	Integer UpdateClient(Clients clients);
 	
 	/**
 	 * This method delete client by id
 	 * @param id
-	 * @return boolean
+	 * @return Integer
 	 */
-	boolean DeleteClient(Integer id);
+	Integer DeleteClient(Integer id);
 }
