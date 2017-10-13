@@ -1,13 +1,14 @@
-package com.springbootproject.daoService;
+package com.springBoot.project.daoService;
 
 import java.util.List;
 
-import com.springbootproject.entity.Client;
+import com.springBoot.project.entity.Client;
 
 public interface IClientDaoService {
 	/**
 	 * This method select all client form db
 	 * @return List<Clients>
+	 * @throws Exception 
 	 */
 	List<Client> getAll();
 	
@@ -16,7 +17,7 @@ public interface IClientDaoService {
 	 * @param id
 	 * @return Clients
 	 */
-	Client selectById(Integer id);
+	Client getById(Integer id);
 	
 	/**
 	 * This method create a new client in db

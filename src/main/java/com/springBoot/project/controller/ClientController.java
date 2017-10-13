@@ -1,4 +1,4 @@
-package com.springbootproject.controller;
+package com.springBoot.project.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springbootproject.daoService.IClientDaoService;
-import com.springbootproject.entity.Client;
+import com.springBoot.project.daoService.IClientDaoService;
+import com.springBoot.project.entity.Client;
 
 @RestController
 @RequestMapping("/client")
@@ -46,7 +46,7 @@ public class ClientController {
 	@ResponseBody
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Client> SelectClientById(@PathVariable("id") Integer id) {
-		Client client = clientDaoService.selectById(id);
+		Client client = clientDaoService.getById(id);
 		
 		return new ResponseEntity<Client>(client, HttpStatus.OK);
 	}

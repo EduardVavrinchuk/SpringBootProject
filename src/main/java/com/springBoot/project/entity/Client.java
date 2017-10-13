@@ -1,7 +1,4 @@
-package com.springbootproject.entity;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package com.springBoot.project.entity;
 
 public class Client {
 	private Integer id;
@@ -67,4 +64,5 @@ public class Client {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
 }
