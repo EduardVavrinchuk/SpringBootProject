@@ -1,4 +1,4 @@
-package com.SpringBootProject.DaoServices;
+package com.springbootproject.daoService;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,17 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
-import com.SpringBootProject.Entity.Clients;
+import com.springbootproject.entity.Client;
 
-
-public class ClientsDaoService implements ClientsDaoInterface {
-	private static String URL = "jdbc:mysql://localhost:3306/TestProject";
-	private static String USERNAME = "root";
-	private static String PASSWORD = "0905";
+@Repository
+public class ClientsDaoService implements IClientDaoService {
+	@Value("${jdbc.url}") private String URL;
+	@Value("${jdbc.username}") private String USERNAME;
+	@Value("${jdbc.password}") private String PASSWORD;
 	private Connection connection = CreateConnection();
 	
-	
+	/**
+	 * This method create instance of Client and return it
+	 * @return Client
+	 * @throws SQLException 
+	 */
+	public Client getClient(ResultSet resultSet) throws SQLException {
+		return new Client(resultSet.getInt("id"), resultSet.getString("lastName"), resultSet.getString("name"),
+				resultSet.getString("numberPassport"),resultSet.getString("address"),resultSet.getString("phone"));
+	}
 	private static final Logger logger = Logger.getLogger(ClientsDaoService.class);
 	
 	private static String QUERY_GET_ALL_CLIENTS = "{SELECT id, SurName, Name, Passport, HomeAddress, Telephone FROM `Client`}";
@@ -37,20 +47,9 @@ public class ClientsDaoService implements ClientsDaoInterface {
 			return DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		}
 		catch(SQLException e){
-			logger.error(e.getMessage());
+			logger.error(e);
 		}
 		return null;
-	}
-	
-	/**
-	 * This method create instance of Reader and return it
-	 * @return Reader
-	 * @throws SQLException 
-	 */
-	
-	private Clients getClient(ResultSet resultSet) throws SQLException {
-		return new Clients(resultSet.getInt("id"), resultSet.getString("SurName"), resultSet.getString("Name"),
-				resultSet.getString("Passport"),resultSet.getString("HomeAddress"),resultSet.getString("Telephone"));
 	}
 	
 	/**
@@ -58,14 +57,13 @@ public class ClientsDaoService implements ClientsDaoInterface {
 	 * @return List<Clients>
 	 */
 	@Override
-	public List<Clients> GetAllClients() {	
-		
+	public List<Client> getAll() {	
 		try
 		{
 			CallableStatement statement = connection.prepareCall(QUERY_GET_ALL_CLIENTS);
 			ResultSet resultSet = statement.executeQuery();
 			
-			List<Clients> ListClients = new ArrayList<>();
+			List<Client> ListClients = new ArrayList<>();
 			
 			while(resultSet.next()) {
 				ListClients.add(getClient(resultSet));
@@ -87,7 +85,7 @@ public class ClientsDaoService implements ClientsDaoInterface {
 	 * @return Clients
 	 */
 	@Override
-	public Clients SelectClientById(Integer id) {
+	public Client selectById(Integer id) {
 		try {
 			CallableStatement statement = connection.prepareCall(QUERY_SELECT_CLIENT_BY_ID);
 			statement.setLong("id", id);
@@ -97,7 +95,7 @@ public class ClientsDaoService implements ClientsDaoInterface {
 			
 			resultSet.next();
 			
-			Clients clients = getClient(resultSet);
+			Client clients = getClient(resultSet);
 			
 			return clients;
 			
@@ -114,15 +112,15 @@ public class ClientsDaoService implements ClientsDaoInterface {
 	 * @return Integer
 	 */
 	@Override
-	public Integer CreateClient(Clients client) {
+	public Integer create(Client client) {
 		
 		try {
 			CallableStatement statement = connection.prepareCall(QUERY_CREATE_CLIENT);
-			statement.setString("Sname", client.getSurName());
+			statement.setString("Sname", client.getLastName());
 			statement.setString("name", client.getName());
-			statement.setString("passport", client.getPassport());
-			statement.setString("homeaddress", client.getHomeAddress());
-			statement.setString("telephone", client.getTelephone());
+			statement.setString("passport", client.getNumberPassport());
+			statement.setString("homeaddress", client.getAddress());
+			statement.setString("telephone", client.getPhone());
 			statement.execute();
 			
 			ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -144,14 +142,14 @@ public class ClientsDaoService implements ClientsDaoInterface {
 	 * @return Integer
 	 */
 	@Override
-	public Integer UpdateClient(Clients client) {
+	public Integer update(Client client) {
 		try {
 			CallableStatement statement = connection.prepareCall(QUERY_UPDATE_CLIENT_BY_ID);
-			statement.setString("Sname", client.getSurName());
+			statement.setString("Sname", client.getLastName());
 			statement.setString("name", client.getName());
-			statement.setString("passport", client.getPassport());
-			statement.setString("homeaddress", client.getHomeAddress());
-			statement.setString("telephone", client.getTelephone());
+			statement.setString("passport", client.getNumberPassport());
+			statement.setString("homeaddress", client.getAddress());
+			statement.setString("telephone", client.getPhone());
 			statement.setLong("id", client.getId());
 			statement.execute();
 			return client.getId();
@@ -169,7 +167,7 @@ public class ClientsDaoService implements ClientsDaoInterface {
 	 * @return Integer
 	 */
 	@Override
-	public Integer DeleteClient(Integer id) {
+	public Integer delete(Integer id) {
 		
 		try{
 			CallableStatement statement = connection.prepareCall(QUERY_DELETE_CLIENT);

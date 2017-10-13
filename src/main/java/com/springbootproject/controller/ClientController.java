@@ -1,4 +1,4 @@
-package com.SpringBootProject.Controller;
+package com.springbootproject.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.SpringBootProject.DaoServices.ClientsDaoInterface;
-import com.SpringBootProject.Entity.Clients;
+import com.springbootproject.daoService.IClientDaoService;
+import com.springbootproject.entity.Client;
 
 @RestController
 @RequestMapping("/client")
+
 public class ClientController {
 	@Autowired
-	private ClientsDaoInterface clientsDaoInterface;
+	private IClientDaoService clientDaoService;
 	
 	private Map<String, Integer> mapToResponse = new HashMap<>();
 	
@@ -31,10 +32,10 @@ public class ClientController {
 	 */
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Clients>> GetAllClients() {
-		List<Clients> ListClients = clientsDaoInterface.GetAllClients();
+	public ResponseEntity<List<Client>> GetAllClients() {
+		List<Client> ListClients = clientDaoService.getAll();
 		
-		return new ResponseEntity<List<Clients>>(ListClients, HttpStatus.OK);
+		return new ResponseEntity<List<Client>>(ListClients, HttpStatus.OK);
 	}
 	
 	/**
@@ -44,10 +45,10 @@ public class ClientController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Clients> SelectClientById(@PathVariable("id") Integer id) {
-		Clients client = clientsDaoInterface.SelectClientById(id);
+	public ResponseEntity<Client> SelectClientById(@PathVariable("id") Integer id) {
+		Client client = clientDaoService.selectById(id);
 		
-		return new ResponseEntity<Clients>(client, HttpStatus.OK);
+		return new ResponseEntity<Client>(client, HttpStatus.OK);
 	}
 	
 	/**
@@ -57,8 +58,8 @@ public class ClientController {
 	 */
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Map<String, Integer>> CreateClient(@RequestBody Clients client) {
-		Integer id = clientsDaoInterface.CreateClient(client);
+	public ResponseEntity<Map<String, Integer>> CreateClient(@RequestBody Client client) {
+		Integer id = clientDaoService.create(client);
 		
 		mapToResponse.put("id", id);
 		return new ResponseEntity<Map<String, Integer>>(mapToResponse, HttpStatus.OK);
@@ -71,8 +72,8 @@ public class ClientController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Map<String, Integer>> UpdateClient(@RequestBody Clients client) {
-		Integer id = clientsDaoInterface.UpdateClient(client);
+	public ResponseEntity<Map<String, Integer>> UpdateClient(@RequestBody Client client) {
+		Integer id = clientDaoService.update(client);
 		
 		mapToResponse.put("id", id);
 		return new ResponseEntity<Map<String, Integer>>(mapToResponse, HttpStatus.OK);
