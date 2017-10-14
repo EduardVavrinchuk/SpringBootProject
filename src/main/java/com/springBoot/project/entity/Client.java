@@ -1,5 +1,8 @@
 package com.springBoot.project.entity;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Client {
 	private Integer id;
 	private String lastName;
@@ -64,5 +67,13 @@ public class Client {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+	/**
+	 * This method create Client and return him
+	 * @return Client
+	 * @throws SQLException 
+	 */
+	public static Client getClient(ResultSet resultSet) throws SQLException {
+		return new Client(resultSet.getInt("id"), resultSet.getString("lastName"), resultSet.getString("name"),
+				resultSet.getString("numberPassport"),resultSet.getString("address"),resultSet.getString("phone"));
+	}
 }
