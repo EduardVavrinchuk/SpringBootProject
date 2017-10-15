@@ -1,8 +1,8 @@
-package com.springBoot.project.daoService;
+package com.spring.boot.project.daoService;
 
 import java.util.List;
 
-import com.springBoot.project.entity.Client;
+import com.spring.boot.project.entity.Client;
 
 public interface IClientDaoService {
 	/**

@@ -1,4 +1,4 @@
-package com.springBoot.project.entity;
+package com.spring.boot.project.entity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -67,6 +67,7 @@ public class Client {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
 	/**
 	 * This method create Client and return him
 	 * @return Client
